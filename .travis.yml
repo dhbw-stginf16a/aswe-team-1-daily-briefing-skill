@@ -1,0 +1,24 @@
+language: python
+python:
+- '3.6'
+services:
+- docker
+install:
+- pip install pipenv
+- pipenv install --dev
+script:
+- pipenv run coverage run --source './' --omit './test/*' -m pytest
+- pipenv run coverage report
+- pipenv lock -r > requirements.txt
+deploy:
+  provider: script
+  script: bash ./deploy.sh
+  on:
+    branch: master
+    tags: true
+env:
+  global:
+  - DOCKER_USERNAME=thorekr
+  - OWN_URL='http://localhost:5000/api/v1/'
+  - CENTRAL_NODE_BASE_URL='http://localhost:8080/api/v1/'
+  - secure: eszMe8y/Q6ZNWlVVNpRlzfuScRcqX18mqAY1nOkj9UDZ7jftayFxRUHwNSFwk6oux6oKg1iCOEGkFaBDq7ULWRORppeZYrp9H6d0WZpGYui2Sjb4kmexE8hSOAJz+1FlWrDg9769FtpgWxYJeYPsfJRZniIjCXceTWF1qvh73xG/ca/Ka2rhvIHbAcn7i5VfybL0jlyDa2S4nC2XfMBKbtXmvyZuA48+fNTmEBDdPcDBlYX3ApRLL/lZgOZTRFzr4SbrZAOD4XIK+FGv+DMxha0SgFGo1Yl9KLStYu2zeL/1QzbnQbcXbpkN4MfsY2rIV1ZucJOYc9taIyM2GqyAV3a8XOv68oIyhdt2VSyRcpX/mi2CuCbsGdhotR0rLXkhNYB0ws1CXyDpCw4H8vjBVEFlCFta51Nm4o3KNc1IF7Slmm/Dv6uW9JysRWAZ4wdCkIMQ3CVfC/YTESl4PikBIsOFJkLa7DhZoeoz7DpXgk0rSUXXpjErrAwj1HXkbtiyQ+w+UQcTpJC0GsH6PKEEyjP7MGeakSSdxidZX8+ZJ/sDQXhGRXy0gkMEJNTPDcVE2iuwWaurODbCfn9jOZNslNfYRw8rAvqJW2qT6tRfvK7iOjEk64sTXz6ZQcvpmXYftVIh2QDV18PcE73iUyTLwLdbWDP4gYOqCIq1kWhM1H8=

@@ -1,0 +1,33 @@
+openapi: "3.0.0"
+info:
+  description: "calendar monitoring entity"
+  version: "0.0.1"
+  title: "calendar-mon-entity"
+  termsOfService: "http://swagger.io/terms/"
+  license:
+    name: "GPLv2"
+    url: "https://www.gnu.org/licenses/gpl-2.0.en.html"
+
+servers:
+  - url: /api/v1
+    description: "The APIs base path"
+
+tags:
+- name: "request"
+  description: "A request to a monitoring entity"
+
+paths:
+  /trigger:
+    post:
+      tags:
+      - "request"
+      summary: "Trigger proactive event to happen right now!"
+      description: "For demo purposes only"
+      operationId: "api.skill.trigger"
+      responses:
+        204:
+          description: "Triggered"
+
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

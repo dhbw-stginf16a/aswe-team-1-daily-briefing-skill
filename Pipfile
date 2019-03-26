@@ -1,0 +1,27 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+connexion = {extras = ["swagger-ui"]}
+flask-cors = "*"
+gunicorn = "*"
+requests = "*"
+
+
+[dev-packages]
+
+pytest = "*"
+pylint = "*"
+"flake8" = "*"
+coverage = "*"
+requests-mock = "*"
+
+
+[requires]
+
+python_version = "3.6"
