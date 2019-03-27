@@ -9,7 +9,10 @@ import connexion
 from flask_cors import CORS
 from requests.exceptions import ConnectionError
 
+from api.models.BriefingManager import BRIEFING_MANAGER
+
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 
 CENTRAL_NODE_BASE_URL = os.environ["CENTRAL_NODE_BASE_URL"]
@@ -32,9 +35,9 @@ logger.info('App initialized')
 @application.before_first_request
 def register():
     while True:
-        logger.info("Attempt registration")
+        logger.info("Attempting registration")
         try:
-            r = requests.post("{}/monitoring".format(CENTRAL_NODE_BASE_URL), json = { "name": "calendar", "endpoint": OUR_URL, "concern": 'calendar'})
+            r = requests.post("{}/skill".format(CENTRAL_NODE_BASE_URL), json={ "name": "daily_briefing", "endpoint": OUR_URL, "interests": []})
             if r.status_code == 204:
                 logger.info("Registered")
                 break
@@ -43,3 +46,4 @@ def register():
             logger.warning('Retrying in 5 seconds')
 
         time.sleep(5)
+    BRIEFING_MANAGER.run()

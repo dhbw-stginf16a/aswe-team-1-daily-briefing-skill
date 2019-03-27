@@ -16,12 +16,6 @@ CENTRAL_NODE_BASE_URL = os.environ["CENTRAL_NODE_BASE_URL"]
 class PeriodicSkillWorker:
     """This is a manager to constantly check daily updates
     """
-
-    def __init__(self):
-        """Init
-        """
-        self.run()
-
     def getCalendarEvents(self):
         body = {
             'type': 'event_date',
@@ -30,8 +24,9 @@ class PeriodicSkillWorker:
                 'date': datetime.now().isoformat()
             }
         }
-        resp = requests.post(f'{CENTRAL_NODE_BASE_URL}/monitoring/calendar', json=body)
-        return resp.json()['payload']
+        resp = requests.post(f'{CENTRAL_NODE_BASE_URL}/monitoring/calendar', json=body).json()
+        print(resp)
+        return resp.setdefault('payload', {})
 
     def getTrelloCards(self):
         return [{'Task': 'ASWE Presentation', 'dueDate': datetime.today().isoformat()}]
@@ -44,8 +39,8 @@ class PeriodicSkillWorker:
                 'day': 'today'
             }
         }
-        resp = requests.post(f'{CENTRAL_NODE_BASE_URL}/monitoring/wikipedia', json=body)
-        return resp.json()['payload']
+        resp = requests.post(f'{CENTRAL_NODE_BASE_URL}/monitoring/wikipedia', json=body).json()
+        return resp['payload']
 
     def generateEvent(self):
         return {

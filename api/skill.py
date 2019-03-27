@@ -6,9 +6,10 @@ logger = logging.getLogger(__name__)
 
 from api.models.BriefingManager import BRIEFING_MANAGER
 
-def trigger():
+def trigger(body):
     """This function is triggered by the api.
     """
+    logger(body)
     BRIEFING_MANAGER.run()
 
     return '', 204
