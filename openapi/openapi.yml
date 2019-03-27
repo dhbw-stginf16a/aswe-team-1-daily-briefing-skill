@@ -1,8 +1,8 @@
 openapi: "3.0.0"
 info:
-  description: "calendar monitoring entity"
+  description: "Daily Briefing Skill"
   version: "0.0.1"
-  title: "calendar-mon-entity"
+  title: "Daily Briefing Skill"
   termsOfService: "http://swagger.io/terms/"
   license:
     name: "GPLv2"
@@ -13,14 +13,14 @@ servers:
     description: "The APIs base path"
 
 tags:
-- name: "request"
-  description: "A request to a monitoring entity"
+- name: "trigger"
+  description: "A trigger for external event creation"
 
 paths:
   /trigger:
     post:
       tags:
-      - "request"
+      - "trigger"
       summary: "Trigger proactive event to happen right now!"
       description: "For demo purposes only"
       operationId: "api.skill.trigger"

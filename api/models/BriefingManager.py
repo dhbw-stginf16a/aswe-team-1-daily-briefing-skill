@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import threading
@@ -10,7 +11,7 @@ from api.models.motivationalQuotes import getMotivationalQuote
 
 logger = logging.getLogger(__name__)
 
-CENTRAL_NODE_BASE_URL = os.environ["CENTRAL_NODE_BASE_URL"]
+CENTRAL_NODE_BASE_URL = os.environ.setdefault('CENTRAL_NODE_BASE_URL', 'http://localhost:8080/api/v1')
 
 
 class PeriodicSkillWorker:
@@ -25,11 +26,11 @@ class PeriodicSkillWorker:
             }
         }
         resp = requests.post(f'{CENTRAL_NODE_BASE_URL}/monitoring/calendar', json=body).json()
-        print(resp)
-        return resp.setdefault('payload', {})
+        logger.debug(resp[0]['payload'])
+        return resp[0].setdefault('payload', {})
 
     def getTrelloCards(self):
-        return [{'Task': 'ASWE Presentation', 'dueDate': datetime.today().isoformat()}]
+        return [{'Task': 'ASWE Presentation', 'dueDate': datetime.now().isoformat()}]
 
     def getWikipediaData(self):
         body = {
@@ -40,12 +41,14 @@ class PeriodicSkillWorker:
             }
         }
         resp = requests.post(f'{CENTRAL_NODE_BASE_URL}/monitoring/wikipedia', json=body).json()
-        return resp['payload']
+        logger.debug(resp[0]['payload'])
+        return resp[0]['payload']
 
     def generateEvent(self):
         return {
             'type': 'daily_briefing',
             'payload': {
+                'user': 'DemoUser',
                 'song_of_the_day': 'https://www.youtube.com/watch?v=hPUvhMSRmUg',
                 'calendar_events': self.getCalendarEvents(),
                 'wikipedia_events': self.getWikipediaData(),
@@ -57,7 +60,9 @@ class PeriodicSkillWorker:
     def run(self):
         """Process a request
         """
-        requests.post(f'{CENTRAL_NODE_BASE_URL}/proactive', json=self.generateEvent())
-        threading.Timer(24*3600, self.run).start()
+        event = self.generateEvent()
+        logger.debug(json.dumps(event, indent=4, sort_keys=True))
+        requests.post(f'{CENTRAL_NODE_BASE_URL}/proactive', json=event)
+        # threading.Timer(24*3600, self.run).start()
 
 BRIEFING_MANAGER = PeriodicSkillWorker()

@@ -9,7 +9,7 @@ from api.models.BriefingManager import BRIEFING_MANAGER
 def trigger(body):
     """This function is triggered by the api.
     """
-    logger(body)
+    logger.info(body)
     BRIEFING_MANAGER.run()
 
     return '', 204
