@@ -42,7 +42,13 @@ class PeriodicSkillWorker:
         }
         resp = requests.post(f'{CENTRAL_NODE_BASE_URL}/monitoring/wikipedia', json=body).json()
         logger.debug(resp[0]['payload'])
-        return resp[0]['payload']
+
+        small_wiki = {}
+        for key, value in resp[0]['payload'].items():
+            small_wiki[key] = list()
+            for element in value:
+                small_wiki[key].append(element[0])
+        return small_wiki
 
     def generateEvent(self):
         return {

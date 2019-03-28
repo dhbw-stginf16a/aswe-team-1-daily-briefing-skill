@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import json
 
 import pytest
 import requests
@@ -32,13 +33,11 @@ class TestConnexion:
             }
         }]
 
+        with open('test/wikipedia.json', 'r') as wikipedia:
+            wiki = json.load(wikipedia)
+
         wikipedia_response = [{
-            'payload': {
-                'births': [],
-                'deaths': [],
-                'events': [],
-                'holidays': []
-            }
+            'payload': wiki
         }]
 
         requests_mock.post(f'{self.CENTRAL_NODE_BASE_URL}/skill', text='', status_code=204)
