@@ -33,6 +33,17 @@ class TestConnexion:
             }
         }]
 
+        trello_response = [{
+            'payload': {
+                "cards": [
+                {
+                    'Task': 'Build awesome tests',
+                    'dueDate': '2019-03-28T20:17:00+00:00'
+                }
+            ]
+            }
+        }]
+
         with open('test/wikipedia.json', 'r') as wikipedia:
             wiki = json.load(wikipedia)
 
@@ -40,9 +51,24 @@ class TestConnexion:
             'payload': wiki
         }]
 
+        pollination_response = [{
+            'payload': {
+                'pollination': {
+                    'ambrosia': 1
+                }
+            }
+        }]
+
+        userPrefs = {
+            'ambrosia': 'true'
+        }
+
+        requests_mock.get(f'{self.CENTRAL_NODE_BASE_URL}/preferences/user/DemoUser', status_code=200, json=userPrefs)
         requests_mock.post(f'{self.CENTRAL_NODE_BASE_URL}/skill', text='', status_code=204)
         requests_mock.post(f'{self.CENTRAL_NODE_BASE_URL}/monitoring/calendar', json=calendar_response, status_code=200)
         requests_mock.post(f'{self.CENTRAL_NODE_BASE_URL}/monitoring/wikipedia', json=wikipedia_response, status_code=200)
+        requests_mock.post(f'{self.CENTRAL_NODE_BASE_URL}/monitoring/trello', json=trello_response, status_code=200)
+        requests_mock.post(f'{self.CENTRAL_NODE_BASE_URL}/monitoring/pollination', json=pollination_response, status_code=200)
         requests_mock.post(f'{self.CENTRAL_NODE_BASE_URL}/proactive', text='', status_code=204)
         with app.app.test_client() as c:
             yield c

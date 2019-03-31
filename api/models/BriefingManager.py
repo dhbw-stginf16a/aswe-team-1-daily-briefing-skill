@@ -96,7 +96,7 @@ class PeriodicSkillWorker:
                 'wikipedia_events': self.getWikipediaData(),
                 'todo': self.getTrelloCards(userName)['cards'],
                 'motivational_quote': getMotivationalQuote(),
-                'pollen': self.getPollinationInfo(userPrefs)
+                'pollen': self.getPollinationInfo(userPrefs)['pollination']
             }
         }
 

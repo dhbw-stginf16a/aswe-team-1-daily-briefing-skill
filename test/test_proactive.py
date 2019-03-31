@@ -9,6 +9,6 @@ class TestProactive(TestConnexion):
     """A demo test without real purpose
     """
     def test_proactive(self, client):
-        response = client.post('/api/v1/trigger')
+        response = client.post('/api/v1/trigger/DemoUser')
 
         assert response.status_code == 204
