@@ -2,4 +2,4 @@
 
 ## Proactive Events
 
-There will be data.
+This skill sends a lot of json to the central node to be processed.

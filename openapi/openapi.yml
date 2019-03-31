@@ -17,7 +17,14 @@ tags:
   description: "A trigger for external event creation"
 
 paths:
-  /trigger:
+  /trigger/{userName}:
+    parameters:
+      - in: 'path'
+        name: 'userName'
+        required: true
+        schema:
+          type: 'string'
+
     post:
       tags:
       - "trigger"

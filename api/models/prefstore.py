@@ -8,7 +8,7 @@ import requests
 logger = logging.getLogger(__name__)
 
 
-CENTRAL_NODE_BASE_URL = os.environ["CENTRAL_NODE_BASE_URL"]
+CENTRAL_NODE_BASE_URL = os.environ.setdefault('CENTRAL_NODE_BASE_URL', 'http://localhost:8080/api/v1')
 
 class PrefStoreClient:
     def __init__(self, base_url):
@@ -20,8 +20,3 @@ class PrefStoreClient:
         return r.json()
 
 PREFSTORE_CLIENT = PrefStoreClient(CENTRAL_NODE_BASE_URL)
-
-
-def getCalendarURL(calendarName):
-    userPrefs = PREFSTORE_CLIENT.get_user_prefs(calendarName)
-    return userPrefs['calendarURL']

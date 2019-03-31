@@ -3,8 +3,6 @@
 import logging
 import random
 
-import requests
-
 logger = logging.getLogger(__name__)
 
 quotes = [
