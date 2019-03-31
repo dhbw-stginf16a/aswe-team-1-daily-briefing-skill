@@ -94,7 +94,7 @@ class PeriodicSkillWorker:
                 'song_of_the_day': getSong(),
                 'calendar_events': self.getCalendarEvents(userName),
                 'wikipedia_events': self.getWikipediaData(),
-                'todo': self.getTrelloCards(userName),
+                'todo': self.getTrelloCards(userName)['cards'],
                 'motivational_quote': getMotivationalQuote(),
                 'pollen': self.getPollinationInfo(userPrefs)
             }
