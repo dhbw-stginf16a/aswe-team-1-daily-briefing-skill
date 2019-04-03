@@ -61,22 +61,15 @@ class PeriodicSkillWorker:
                 small_wiki[key].append(element[0])
         return small_wiki
 
-    def getPollinationInfo(self, prefs):
+    def getPollinationInfo(self, allergies):
+        pollen = { allergy: 'true' for allergy in allergies }
+
         body = {
             'type': 'current_pollination',
             'payload': {
                 "region": "Hohenlohe/mittlerer Neckar/Oberschwaben",
                 "day": "today",
-                "pollen": {
-                    "ambrosia": prefs.setdefault('ambrosia', 'false'),
-                    "beifuss": prefs.setdefault('beifuss', 'false'),
-                    "birke": prefs.setdefault('birke', 'false'),
-                    "erle": prefs.setdefault('erle', 'false'),
-                    "esche": prefs.setdefault('esche', 'false'),
-                    "graeser": prefs.setdefault('graeser', 'false'),
-                    "hasel": prefs.setdefault('hasel', 'false'),
-                    "roggen": prefs.setdefault('roggen', 'false')
-                }
+                "pollen": pollen
             }
         }
 
@@ -87,17 +80,32 @@ class PeriodicSkillWorker:
 
     def generateEvent(self, userName):
         userPrefs = PREFSTORE_CLIENT.get_user_prefs(userName)
+        payload =  {
+            'user': userName,
+            'song_of_the_day': getSong(),
+            'wikipedia_events': self.getWikipediaData(),
+            'motivational_quote': getMotivationalQuote(),
+        }
+
+        if userPrefs.setdefault('calendarURL', None) is not None:
+            payload['calendar_events'] = self.getCalendarEvents(userName)
+        else:
+            payload.setdefault('missing_credentials', list()).append('calendar')
+
+        if userPrefs.setdefault('trello_board', None) is not None:
+            payload['todo'] = self.getTrelloCards(userName)['cards']
+        else:
+            payload.setdefault('missing_credentials', list()).append('trello')
+
+        if userPrefs.setdefault('pollen', None) is not None:
+            allergies = userPrefs['pollen'].split(';')
+            payload['pollen'] = self.getPollinationInfo(allergies)['pollination']
+        else:
+            payload.setdefault('missing_credentials', list()).append('pollen')
+
         return {
             'type': 'daily_briefing',
-            'payload': {
-                'user': userName,
-                'song_of_the_day': getSong(),
-                'calendar_events': self.getCalendarEvents(userName),
-                'wikipedia_events': self.getWikipediaData(),
-                'todo': self.getTrelloCards(userName)['cards'],
-                'motivational_quote': getMotivationalQuote(),
-                'pollen': self.getPollinationInfo(userPrefs)['pollination']
-            }
+            'payload': payload
         }
 
     def run(self, userName):

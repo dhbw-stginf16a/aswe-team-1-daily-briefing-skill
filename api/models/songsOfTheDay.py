@@ -13,8 +13,8 @@ songs = [
     'https://www.youtube.com/watch?v=MLcUKuoL6-Y',
     'https://www.youtube.com/watch?v=aPtr43KHBGk',
     'https://www.youtube.com/watch?v=NRj3Vu0yUF4',
-    'https://www.youtube.com/watch?v=vjuw4nDlEtw',
-    'https://www.youtube.com/watch?v=wYOM00Xx29c'
+    'https://www.youtube.com/watch?v=wYOM00Xx29c',
+    'https://www.youtube.com/watch?v=WcA8eduW1Pg'
 ]
 
 def getSong():

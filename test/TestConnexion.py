@@ -54,16 +54,12 @@ class TestConnexion:
         pollination_response = [{
             'payload': {
                 'pollination': {
-                    'ambrosia': 1
+                    'ambrosia': 1,
+                    'graeser': 0
                 }
             }
         }]
 
-        userPrefs = {
-            'ambrosia': 'true'
-        }
-
-        requests_mock.get(f'{self.CENTRAL_NODE_BASE_URL}/preferences/user/DemoUser', status_code=200, json=userPrefs)
         requests_mock.post(f'{self.CENTRAL_NODE_BASE_URL}/skill', text='', status_code=204)
         requests_mock.post(f'{self.CENTRAL_NODE_BASE_URL}/monitoring/calendar', json=calendar_response, status_code=200)
         requests_mock.post(f'{self.CENTRAL_NODE_BASE_URL}/monitoring/wikipedia', json=wikipedia_response, status_code=200)
