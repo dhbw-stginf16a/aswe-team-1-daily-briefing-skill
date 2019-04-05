@@ -43,11 +43,11 @@ class PeriodicSkillWorker:
         logger.debug(resp[0]['payload'])
         return resp[0].setdefault('payload', {})
 
-    def getWikipediaData(self):
+    def getWikipediaData(self, userPrefs):
         body = {
             'type': 'event_on_this_day',
             'payload': {
-                'type': 'all',
+                'type': userPrefs.setdefault('wikipedia', 'all'),
                 'day': 'today'
             }
         }
@@ -83,7 +83,7 @@ class PeriodicSkillWorker:
         payload =  {
             'user': userName,
             'song_of_the_day': getSong(),
-            'wikipedia_events': self.getWikipediaData(),
+            'wikipedia_events': self.getWikipediaData(userPrefs),
             'motivational_quote': getMotivationalQuote(),
         }
 

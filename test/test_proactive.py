@@ -20,7 +20,8 @@ class TestProactive(TestConnexion):
         userPrefs = {
             'pollen': 'ambrosia;graeser',
             'trello_board': 'abc',
-            'calendarURL': 'http://some.url/calendar.ics'
+            'calendarURL': 'http://some.url/calendar.ics',
+            'wikipedia': 'deaths'
         }
 
         # All preferences
