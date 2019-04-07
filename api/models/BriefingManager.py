@@ -73,9 +73,15 @@ class PeriodicSkillWorker:
             }
         }
 
+        pollenList = []
+
         resp = requests.post(f'{CENTRAL_NODE_BASE_URL}/monitoring/pollination', json=body).json()
         logger.debug(resp[0]['payload'])
-        return resp[0].setdefault('payload', {})
+        for k, v in resp[0].setdefault('payload', {})['pollination'].items():
+            if v != "0":
+                pollenList.append(k)
+
+        return pollenList
 
 
     def generateEvent(self, userName):
@@ -99,7 +105,7 @@ class PeriodicSkillWorker:
 
         if userPrefs.setdefault('pollen', None) is not None:
             allergies = userPrefs['pollen'].split(';')
-            payload['pollen'] = self.getPollinationInfo(allergies)['pollination']
+            payload['pollen'] = self.getPollinationInfo(allergies)
         else:
             payload.setdefault('missing_credentials', list()).append('pollen')
 
